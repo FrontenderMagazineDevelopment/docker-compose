@@ -1,0 +1,14 @@
+{
+  "tokenService": "",
+  "orgName": "",
+  "githubAPI": "",
+  "githubAuthURL": "",
+  "githubAuthToken": "",
+  "cookieDomain": "",
+  "defaultRedirect:": "",
+  "domain": "",
+  "collectionName": "",
+  "mongoDBHost": "",
+  "mongoDBPort": ,
+  "mongoDBName": ""
+}

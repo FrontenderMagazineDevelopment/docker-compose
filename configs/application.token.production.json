@@ -1,0 +1,16 @@
+{
+  "tokenService": "",
+  "orgName": "",
+  "githubAPI": "",
+  "githubAuthURL": "",
+  "githubAuthToken": "",
+  "cookieDomain": "",
+  "defaultRedirect:": "",
+  "teams": {
+    "author": 0,
+    "developer": 0,
+    "editor": 0,
+    "staffer": 0,
+    "translator": 0
+  }
+}

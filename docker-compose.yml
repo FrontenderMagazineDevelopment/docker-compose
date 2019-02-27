@@ -1,0 +1,96 @@
+version: '3.2'
+
+services:
+  frontender:
+    image: frontendermagazine/frontender:latest
+    build:
+      context: ./frontender.info
+    ports:
+      - "4000:4000"
+    volumes:
+      - './configs/.env:/var/.env'
+      - './configs/application.production.json:/var/app/config/application.production.json'
+    networks:
+      - backend
+    depends_on:
+      - mongodb
+  article:
+    image: frontendermagazine/article:latest
+    build:
+      context: ./article.frontender.info
+    ports:
+      - "5000:4000"
+    volumes:
+      - './configs/.env:/var/.env'
+      - './configs/application.production.json:/var/app/config/application.production.json'
+    networks:
+      - backend
+    depends_on:
+      - mongodb
+      - redis
+  token:
+    image: frontendermagazine/token:latest
+    build:
+      context: ./token.frontender.info
+    ports:
+      - "6000:4000"
+    volumes:
+      - './configs/.env:/var/app/.env'
+      - './configs/application.token.production.json:/var/app/config/application.production.json'
+    networks:
+      - backend
+    depends_on:
+      - mongodb
+      - redis
+  user:
+    image: frontendermagazine/user:latest
+    build:
+      context: ./user.frontender.info
+    ports:
+      - "7000:4000"
+    volumes:
+      - './configs/.env:/var/app/.env'
+      - './configs/application.production.json:/var/app/config/application.production.json'
+    networks:
+      - backend
+    depends_on:
+      - mongodb
+      - redis
+  schedule:
+    image: frontendermagazine/schedule:latest
+    build:
+      context: ./schedule.frontender.info
+    ports:
+      - "8000:4000"
+    volumes:
+      - './configs/.env:/var/.env'
+      - './configs/application.schedule.production.json:/var/app/config/application.production.json'
+    networks:
+      - backend
+    depends_on:
+      - mongodb
+      - redis
+  redis:
+    image: 'redis:alpine'
+    environment:
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
+    networks:
+      - backend
+    volumes:
+      - 'redis:/etc/redis/database/caesarapp'
+  mongodb:
+    image: 'mongo:latest'
+    networks:
+      - backend
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo:/data/db
+
+networks:
+    backend:
+
+volumes:
+    redis:
+    mongo:
