@@ -3,10 +3,8 @@ version: '3.2'
 services:
   frontender:
     image: frontendermagazine/frontender:latest
-    build:
-      context: ./frontender.info
-    ports:
-      - "4000:4000"
+    expose:
+      - "4000" 
     volumes:
       - './configs/.env:/var/.env'
       - './configs/application.production.json:/var/app/config/application.production.json'
@@ -14,12 +12,12 @@ services:
       - backend
     depends_on:
       - mongodb
+    environment:
+      WEB_PORTS: "80 443"
+      VIRTUAL_HOST: "frontend.events"
+      VIRTUAL_PORT: 4000
   article:
     image: frontendermagazine/article:latest
-    build:
-      context: ./article.frontender.info
-    ports:
-      - "5000:4000"
     volumes:
       - './configs/.env:/var/.env'
       - './configs/application.production.json:/var/app/config/application.production.json'
@@ -28,12 +26,14 @@ services:
     depends_on:
       - mongodb
       - redis
+    expose:
+      - "4000"   
+    environment:
+      WEB_PORTS: "80 443"
+      VIRTUAL_HOST: "article.frontend.events"
+      VIRTUAL_PORT: 4000
   token:
     image: frontendermagazine/token:latest
-    build:
-      context: ./token.frontender.info
-    ports:
-      - "6000:4000"
     volumes:
       - './configs/.env:/var/app/.env'
       - './configs/application.token.production.json:/var/app/config/application.production.json'
@@ -42,12 +42,16 @@ services:
     depends_on:
       - mongodb
       - redis
+    ports:
+      - "6000:4000"
+    expose:
+      - "4000"   
+    environment:
+      WEB_PORTS: "80 443"
+      VIRTUAL_HOST: "token.frontend.events"
+      VIRTUAL_PORT: 4000
   user:
     image: frontendermagazine/user:latest
-    build:
-      context: ./user.frontender.info
-    ports:
-      - "7000:4000"
     volumes:
       - './configs/.env:/var/app/.env'
       - './configs/application.production.json:/var/app/config/application.production.json'
@@ -56,12 +60,16 @@ services:
     depends_on:
       - mongodb
       - redis
+    expose:
+      - "4000"   
+    environment:
+      WEB_PORTS: "80 443"
+      VIRTUAL_HOST: "user.frontend.events"
+      VIRTUAL_PORT: 4000
   schedule:
     image: frontendermagazine/schedule:latest
-    build:
-      context: ./schedule.frontender.info
-    ports:
-      - "8000:4000"
+    expose:
+      - "4000"
     volumes:
       - './configs/.env:/var/.env'
       - './configs/application.schedule.production.json:/var/app/config/application.production.json'
@@ -70,6 +78,10 @@ services:
     depends_on:
       - mongodb
       - redis
+    environment:
+      WEB_PORTS: "80 443"
+      VIRTUAL_HOST: "schedule.frontend.events"
+      VIRTUAL_PORT: 4000 
   redis:
     image: 'redis:alpine'
     environment:
@@ -87,7 +99,22 @@ services:
       - "27017:27017"
     volumes:
       - mongo:/data/db
-
+  web:
+    image: jwilder/nginx-proxy
+    ports:
+      - "80:80"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro  
+    environment:
+      - DEFAULT_HOST=frontend.events 
+    networks:
+      - backend  
+  watchtower:
+    image: v2tec/watchtower
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    command: --interval 300
+    
 networks:
     backend:
 
