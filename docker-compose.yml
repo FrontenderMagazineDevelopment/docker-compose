@@ -1,13 +1,12 @@
-version: '3.2'
+version: "3.2"
 
 services:
   frontender:
     image: frontendermagazine/frontender:latest
     expose:
-      - "4000" 
+      - "4000"
     volumes:
-      - './configs/.env:/var/.env'
-      - './configs/application.production.json:/var/app/config/application.production.json'
+      - "./.env:/var/.env"
     networks:
       - backend
     depends_on:
@@ -19,15 +18,13 @@ services:
   article:
     image: frontendermagazine/article:latest
     volumes:
-      - './configs/.env:/var/.env'
-      - './configs/application.production.json:/var/app/config/application.production.json'
+      - "./.env:/var/.env"
     networks:
       - backend
     depends_on:
       - mongodb
-      - redis
     expose:
-      - "4000"   
+      - "4000"
     environment:
       WEB_PORTS: "80 443"
       VIRTUAL_HOST: "article.frontend.events"
@@ -35,17 +32,15 @@ services:
   token:
     image: frontendermagazine/token:latest
     volumes:
-      - './configs/.env:/var/app/.env'
-      - './configs/application.token.production.json:/var/app/config/application.production.json'
+      - "./.env:/var/app/.env"
     networks:
       - backend
     depends_on:
       - mongodb
-      - redis
     ports:
       - "6000:4000"
     expose:
-      - "4000"   
+      - "4000"
     environment:
       WEB_PORTS: "80 443"
       VIRTUAL_HOST: "token.frontend.events"
@@ -53,15 +48,13 @@ services:
   user:
     image: frontendermagazine/user:latest
     volumes:
-      - './configs/.env:/var/app/.env'
-      - './configs/application.production.json:/var/app/config/application.production.json'
+      - "./.env:/var/app/.env"
     networks:
       - backend
     depends_on:
       - mongodb
-      - redis
     expose:
-      - "4000"   
+      - "4000"
     environment:
       WEB_PORTS: "80 443"
       VIRTUAL_HOST: "user.frontend.events"
@@ -71,28 +64,17 @@ services:
     expose:
       - "4000"
     volumes:
-      - './configs/.env:/var/.env'
-      - './configs/application.schedule.production.json:/var/app/config/application.production.json'
+      - "./.env:/var/app/.env"
     networks:
       - backend
     depends_on:
       - mongodb
-      - redis
     environment:
       WEB_PORTS: "80 443"
       VIRTUAL_HOST: "schedule.frontend.events"
-      VIRTUAL_PORT: 4000 
-  redis:
-    image: 'redis:alpine'
-    environment:
-      - REDIS_PORT=${REDIS_PORT}
-      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
-    networks:
-      - backend
-    volumes:
-      - 'redis:/etc/redis/database/caesarapp'
+      VIRTUAL_PORT: 4000
   mongodb:
-    image: 'mongo:latest'
+    image: "mongo:latest"
     networks:
       - backend
     ports:
@@ -104,20 +86,19 @@ services:
     ports:
       - "80:80"
     volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro  
+      - /var/run/docker.sock:/tmp/docker.sock:ro
     environment:
-      - DEFAULT_HOST=frontend.events 
+      - DEFAULT_HOST=frontend.events
     networks:
-      - backend  
+      - backend
   watchtower:
     image: v2tec/watchtower
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     command: --interval 300
-    
+
 networks:
-    backend:
+  backend:
 
 volumes:
-    redis:
-    mongo:
+  mongo:
