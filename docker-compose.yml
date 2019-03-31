@@ -4,7 +4,7 @@ services:
   frontender:
     image: frontendermagazine/frontender:latest
     expose:
-      - "4000"
+      - "${PORT}"
     volumes:
       - '.env:/var/app/.env'
     networks:
@@ -13,8 +13,8 @@ services:
       - mongodb
     environment:
       WEB_PORTS: "80 443"
-      VIRTUAL_HOST: "frontend.events"
-      VIRTUAL_PORT: 4000
+      VIRTUAL_HOST: "${DEFAULT_HOST}"
+      VIRTUAL_PORT: ${PORT}
   article:
     image: frontendermagazine/article:latest
     volumes:
@@ -24,11 +24,11 @@ services:
     depends_on:
       - mongodb
     expose:
-      - "4000"
+      - "${PORT}"
     environment:
       WEB_PORTS: "80 443"
-      VIRTUAL_HOST: "article.frontend.events"
-      VIRTUAL_PORT: 4000
+      VIRTUAL_HOST: "article.${DEFAULT_HOST}"
+      VIRTUAL_PORT: ${PORT}
   token:
     image: frontendermagazine/token:latest
     volumes:
@@ -37,14 +37,12 @@ services:
       - backend
     depends_on:
       - mongodb
-    ports:
-      - "6000:4000"
     expose:
-      - "4000"
+      - "${PORT}"
     environment:
       WEB_PORTS: "80 443"
-      VIRTUAL_HOST: "token.frontend.events"
-      VIRTUAL_PORT: 4000
+      VIRTUAL_HOST: "token.${DEFAULT_HOST}"
+      VIRTUAL_PORT: ${PORT}
   user:
     image: frontendermagazine/user:latest
     volumes:
@@ -54,15 +52,15 @@ services:
     depends_on:
       - mongodb
     expose:
-      - "4000"
+      - "${PORT}"
     environment:
       WEB_PORTS: "80 443"
-      VIRTUAL_HOST: "user.frontend.events"
-      VIRTUAL_PORT: 4000
+      VIRTUAL_HOST: "user.${DEFAULT_HOST}"
+      VIRTUAL_PORT: ${PORT}
   schedule:
     image: frontendermagazine/schedule:latest
     expose:
-      - "4000"
+      - "${PORT}"
     volumes:
       - '.env:/var/app/.env'
     networks:
@@ -71,8 +69,8 @@ services:
       - mongodb
     environment:
       WEB_PORTS: "80 443"
-      VIRTUAL_HOST: "schedule.frontend.events"
-      VIRTUAL_PORT: 4000
+      VIRTUAL_HOST: "schedule.${DEFAULT_HOST}"
+      VIRTUAL_PORT: ${PORT}
   mongodb:
     image: "mongo:latest"
     networks:
@@ -86,7 +84,7 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
     environment:
-      - DEFAULT_HOST=frontend.events
+      - DEFAULT_HOST=${DEFAULT_HOST}
     networks:
       - backend
   watchtower:
