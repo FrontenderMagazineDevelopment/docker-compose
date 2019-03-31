@@ -1,4 +1,4 @@
-version: '3.2'
+version: "3.2"
 
 services:
   frontender:
@@ -23,7 +23,6 @@ services:
       - backend
     depends_on:
       - mongodb
-      - redis
     expose:
       - "4000"
     environment:
@@ -38,7 +37,6 @@ services:
       - backend
     depends_on:
       - mongodb
-      - redis
     ports:
       - "6000:4000"
     expose:
@@ -55,7 +53,6 @@ services:
       - backend
     depends_on:
       - mongodb
-      - redis
     expose:
       - "4000"
     environment:
@@ -72,22 +69,12 @@ services:
       - backend
     depends_on:
       - mongodb
-      - redis
     environment:
       WEB_PORTS: "80 443"
       VIRTUAL_HOST: "schedule.frontend.events"
       VIRTUAL_PORT: 4000
-  redis:
-    image: 'redis:alpine'
-    environment:
-      - REDIS_PORT=${REDIS_PORT}
-      - REDIS_DISABLE_COMMANDS=FLUSHDB,FLUSHALL
-    networks:
-      - backend
-    volumes:
-      - 'redis:/etc/redis/database/caesarapp'
   mongodb:
-    image: 'mongo:latest'
+    image: "mongo:latest"
     networks:
       - backend
     volumes:
@@ -109,8 +96,7 @@ services:
     command: --interval 300
 
 networks:
-    backend:
+  backend:
 
 volumes:
-    redis:
-    mongo:
+  mongo:
