@@ -87,11 +87,6 @@ services:
       - DEFAULT_HOST=${DEFAULT_HOST}
     networks:
       - backend
-  watchtower:
-    image: v2tec/watchtower
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    command: --interval 300
 
 networks:
   backend:
