@@ -1,0 +1,55 @@
+version: '3.2'
+
+services:
+  frontender:
+    build:
+      context: ../frontender.info
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    environment:
+      WEB_PORTS: "80 443"
+      VIRTUAL_HOST: "frontend.localhost"
+      VIRTUAL_PORT: 4000
+  article:
+    build:
+      context: ../article.frontender.info
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    environment:
+      WEB_PORTS: "80 443"
+      VIRTUAL_HOST: "article.frontend.localhost"
+      VIRTUAL_PORT: 4000
+  token:
+    build:
+      context: ../token.frontender.info
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    environment:
+      WEB_PORTS: "80 443"
+      VIRTUAL_HOST: "token.frontend.localhost"
+      VIRTUAL_PORT: 4000
+  user:
+    build:
+      context: ../user.frontender.info
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    environment:
+      WEB_PORTS: "80 443"
+      VIRTUAL_HOST: "user.frontend.localhost"
+      VIRTUAL_PORT: 4000
+  schedule:
+    build:
+      context: ../schedule.frontender.info
+    labels:
+      - "com.centurylinklabs.watchtower.enable=false"
+    environment:
+      WEB_PORTS: "80 443"
+      VIRTUAL_HOST: "schedule.frontend.localhost"
+      VIRTUAL_PORT: 4000
+
+networks:
+    backend:
+
+volumes:
+    redis:
+    mongo:
