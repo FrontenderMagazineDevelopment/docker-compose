@@ -96,6 +96,7 @@ services:
       - user
     volumes:
       - ./nginx:/etc/nginx/conf.d
+      - '../favicon.ico:/websites/favicon.ico'
       - type: bind
         source: /websites/ssl
         target: /websites/ssl
