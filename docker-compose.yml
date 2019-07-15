@@ -8,7 +8,7 @@ services:
     volumes:
       - '.env:/var/app/.env'
       - type: bind
-        source: /websites/frontend.events
+        source: /websites/frontender.info
         target: /var/app/static
     networks:
       - backend
@@ -96,7 +96,7 @@ services:
       - user
     volumes:
       - ./nginx:/etc/nginx/conf.d
-      - '../favicon.ico:/websites/favicon.ico'
+      - '../favicon.ico:/websites/common/favicon.ico'
       - type: bind
         source: /websites/ssl
         target: /websites/ssl
@@ -104,8 +104,8 @@ services:
         source: /websites/articles
         target: /websites/articles
       - type: bind
-        source: /websites/frontend.events
-        target: /websites/frontend.events
+        source: /websites/frontender.info
+        target: /websites/frontender.info
 
     networks:
       - backend
