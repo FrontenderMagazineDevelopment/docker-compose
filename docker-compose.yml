@@ -4,9 +4,12 @@ services:
   frontender:
     image: frontendermagazine/frontender:latest
     expose:
-      - "${PORT}"
+      - "3000"
     volumes:
       - '.env:/var/app/.env'
+      - type: bind
+        source: /websites/frontend.events
+        target: /var/app/static
     networks:
       - backend
     depends_on:
@@ -14,7 +17,7 @@ services:
     environment:
       WEB_PORTS: "80 443"
       VIRTUAL_HOST: "${DEFAULT_HOST}"
-      VIRTUAL_PORT: ${PORT}
+      VIRTUAL_PORT: 3000
   article:
     image: frontendermagazine/article:latest
     volumes:
@@ -24,11 +27,11 @@ services:
     depends_on:
       - mongodb
     expose:
-      - "${PORT}"
+      - "3000"
     environment:
       WEB_PORTS: "80 443"
       VIRTUAL_HOST: "article.${DEFAULT_HOST}"
-      VIRTUAL_PORT: ${PORT}
+      VIRTUAL_PORT: 3000
   token:
     image: frontendermagazine/token:latest
     volumes:
@@ -38,11 +41,11 @@ services:
     depends_on:
       - mongodb
     expose:
-      - "${PORT}"
+      - "3000"
     environment:
       WEB_PORTS: "80 443"
       VIRTUAL_HOST: "token.${DEFAULT_HOST}"
-      VIRTUAL_PORT: ${PORT}
+      VIRTUAL_PORT: 3000
   user:
     image: frontendermagazine/user:latest
     volumes:
@@ -52,15 +55,15 @@ services:
     depends_on:
       - mongodb
     expose:
-      - "${PORT}"
+      - "3000"
     environment:
       WEB_PORTS: "80 443"
       VIRTUAL_HOST: "user.${DEFAULT_HOST}"
-      VIRTUAL_PORT: ${PORT}
+      VIRTUAL_PORT: 3000
   schedule:
     image: frontendermagazine/schedule:latest
     expose:
-      - "${PORT}"
+      - "3000"
     volumes:
       - '.env:/var/app/.env'
     networks:
@@ -70,7 +73,8 @@ services:
     environment:
       WEB_PORTS: "80 443"
       VIRTUAL_HOST: "schedule.${DEFAULT_HOST}"
-      VIRTUAL_PORT: ${PORT}
+      VIRTUAL_PORT: 3000
+
   mongodb:
     image: "mongo:latest"
     networks:
@@ -78,13 +82,30 @@ services:
     volumes:
       - mongo:/data/db
   web:
-    image: jwilder/nginx-proxy
+    image: nginx:latest
     ports:
       - "80:80"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - "443:443"
     environment:
       - DEFAULT_HOST=${DEFAULT_HOST}
+    depends_on:
+      - frontender
+      - article
+      - token
+      - schedule
+      - user
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - type: bind
+        source: /websites/ssl
+        target: /websites/ssl
+      - type: bind
+        source: /websites/articles
+        target: /websites/articles
+      - type: bind
+        source: /websites/frontend.events
+        target: /websites/frontend.events
+
     networks:
       - backend
 
