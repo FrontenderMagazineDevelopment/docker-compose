@@ -4,18 +4,18 @@ services:
   frontender:
     build:
       context: ../frontender.info
-  # article:
-  #   build:
-  #     context: ../article.frontender.info
-  # token:
-  #   build:
-  #     context: ../token.frontender.info
-  # user:
-  #   build:
-  #     context: ../user.frontender.info
-  # schedule:
-  #   build:
-  #     context: ../schedule.frontender.info
+  article:
+    build:
+      context: ../article.frontender.info
+  token:
+    build:
+      context: ../token.frontender.info
+  user:
+    build:
+      context: ../user.frontender.info
+  schedule:
+    build:
+      context: ../schedule.frontender.info
   mongodb:
     ports:
       - "27017:27017"
