@@ -6,7 +6,7 @@ services:
     expose:
       - "3000"
     volumes:
-      - '.env:/var/app/.env'
+      - '../.env:/var/app/.env'
       - type: bind
         source: /websites/frontender.info
         target: /var/app/static
@@ -24,7 +24,7 @@ services:
   article:
     image: frontendermagazine/article:latest
     volumes:
-      - '.env:/var/app/.env'
+      - '../.env:/var/app/.env'
     networks:
       - backend
     depends_on:
@@ -38,7 +38,7 @@ services:
   token:
     image: frontendermagazine/token:latest
     volumes:
-      - '.env:/var/app/.env'
+      - '../.env:/var/app/.env'
     networks:
       - backend
     depends_on:
@@ -52,7 +52,7 @@ services:
   user:
     image: frontendermagazine/user:latest
     volumes:
-      - '.env:/var/app/.env'
+      - '../.env:/var/app/.env'
     networks:
       - backend
     depends_on:
@@ -68,7 +68,7 @@ services:
     expose:
       - "3000"
     volumes:
-      - '.env:/var/app/.env'
+      - '../.env:/var/app/.env'
     networks:
       - backend
     depends_on:
