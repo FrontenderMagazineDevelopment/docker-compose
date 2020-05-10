@@ -67,10 +67,9 @@ services:
     image: frontendermagazine/mail:latest
     healthcheck:
       test: ["CMD", "curl", "-f", "http://0.0.0.0"]
-      interval: 1m30s
+      interval: 5m
       timeout: 10s
       retries: 3
-      start_period: 40s
     volumes:
       - '../.env:/var/app/.env'
     networks:
