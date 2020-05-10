@@ -69,8 +69,6 @@ services:
       - '../.env:/var/app/.env'
     networks:
       - backend
-    depends_on:
-      - mongodb
     expose:
       - "3000"
     environment:
