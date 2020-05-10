@@ -63,6 +63,20 @@ services:
       WEB_PORTS: "80 443"
       VIRTUAL_HOST: "user.${DEFAULT_HOST}"
       VIRTUAL_PORT: 3000
+  mail:
+    image: frontendermagazine/mail:latest
+    volumes:
+      - '../.env:/var/app/.env'
+    networks:
+      - backend
+    depends_on:
+      - mongodb
+    expose:
+      - "3000"
+    environment:
+      WEB_PORTS: "80 443"
+      VIRTUAL_HOST: "mail.${DEFAULT_HOST}"
+      VIRTUAL_PORT: 3000
   schedule:
     image: frontendermagazine/schedule:latest
     expose:
@@ -97,6 +111,7 @@ services:
       - token
       - schedule
       - user
+      - mail
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - '../favicon.ico:/websites/common/favicon.ico'
