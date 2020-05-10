@@ -65,6 +65,12 @@ services:
       VIRTUAL_PORT: 3000
   mail:
     image: frontendermagazine/mail:latest
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://0.0.0.0"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
     volumes:
       - '../.env:/var/app/.env'
     networks:
