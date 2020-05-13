@@ -63,8 +63,8 @@ services:
       WEB_PORTS: "80 443"
       VIRTUAL_HOST: "user.${DEFAULT_HOST}"
       VIRTUAL_PORT: 3000
-  mail:
-    image: frontendermagazine/mail:latest
+  mailparser:
+    image: frontendermagazine/mailparser:latest
     volumes:
       - '../.env:/var/app/.env'
     networks:
@@ -73,7 +73,7 @@ services:
       - "3000"
     environment:
       WEB_PORTS: "80 443"
-      VIRTUAL_HOST: "mail.${DEFAULT_HOST}"
+      VIRTUAL_HOST: "mailparser.${DEFAULT_HOST}"
       VIRTUAL_PORT: 3000
   schedule:
     image: frontendermagazine/schedule:latest
@@ -109,7 +109,7 @@ services:
       - token
       - schedule
       - user
-      - mail
+      - mailparser
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - '../favicon.ico:/websites/common/favicon.ico'
