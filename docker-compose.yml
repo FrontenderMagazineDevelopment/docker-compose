@@ -1,6 +1,17 @@
 version: "3.2"
 
 services:
+  rabbitmq:
+    image: rabbitmq
+    command: rabbitmq-server
+    expose:
+      - 5672
+      - 15672
+    healthcheck:
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "check_running"]
+      interval: 5s
+      timeout: 15s
+      retries: 3
   frontender:
     image: frontendermagazine/frontender:latest
     expose:
