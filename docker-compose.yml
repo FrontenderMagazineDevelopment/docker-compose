@@ -82,6 +82,8 @@ services:
       - '../.env:/var/app/.env'
     networks:
       - backend
+    depends_on:
+      - rabbitmq
     expose:
       - "3000"
     environment:
@@ -123,6 +125,7 @@ services:
       - schedule
       - user
       - mailparser
+      - rabbitmq
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - '../favicon.ico:/websites/common/favicon.ico'
