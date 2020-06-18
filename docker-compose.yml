@@ -7,6 +7,8 @@ services:
     expose:
       - 5672
       - 15672
+    networks:
+      - backend
     healthcheck:
       test: [ "CMD", "rabbitmq-diagnostics", "-q", "check_running"]
       interval: 5s
