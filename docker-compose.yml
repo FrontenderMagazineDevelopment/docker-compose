@@ -34,6 +34,14 @@ services:
       WEB_PORTS: "80 443"
       VIRTUAL_HOST: "${DEFAULT_HOST}"
       VIRTUAL_PORT: 3000
+  analyze:
+    image: frontendermagazine/analyze:latest
+    volumes:
+      - '../.env:/var/app/.env'
+    networks:
+      - backend
+    depends_on:
+      - rabbitmq
   article:
     image: frontendermagazine/article:latest
     volumes:
@@ -42,6 +50,7 @@ services:
       - backend
     depends_on:
       - mongodb
+      - rabbitmq
     expose:
       - "3000"
     environment:
@@ -126,6 +135,7 @@ services:
       - user
       - mailparser
       - rabbitmq
+      - analyze
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - '../favicon.ico:/websites/common/favicon.ico'
