@@ -10,7 +10,7 @@ services:
     networks:
       - backend
     healthcheck:
-      test: [ "CMD", "rabbitmq-diagnostics", "-q", "check_running"]
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "check_port_connectivity"]
       interval: 5s
       timeout: 15s
       retries: 3
