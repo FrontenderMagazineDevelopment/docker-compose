@@ -1,4 +1,4 @@
-version: "3.2"
+version: "3.8"
 
 services:
   rabbitmq:
@@ -10,11 +10,11 @@ services:
     networks:
       - backend
     healthcheck:
-      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "is_running"]
       interval: 5s
       timeout: 15s
       retries: 3
-      start_period: 10s
+      start_period: 40s
   frontender:
     image: frontendermagazine/frontender:latest
     expose:
@@ -121,6 +121,12 @@ services:
       - backend
     volumes:
       - mongo:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      interval: 5s
+      timeout: 15s
+      retries: 3
+      start_period: 40s
   web:
     image: nginx:latest
     ports:
@@ -135,8 +141,6 @@ services:
       - schedule
       - user
       - mailparser
-      - rabbitmq
-      - analyze
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - '../favicon.ico:/websites/common/favicon.ico'
