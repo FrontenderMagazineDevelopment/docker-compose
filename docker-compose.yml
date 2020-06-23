@@ -10,10 +10,11 @@ services:
     networks:
       - backend
     healthcheck:
-      test: [ "CMD", "rabbitmq-diagnostics", "-q", "check_port_connectivity"]
+      test: [ "CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 5s
       timeout: 15s
       retries: 3
+      start_period: 10s
   frontender:
     image: frontendermagazine/frontender:latest
     expose:
