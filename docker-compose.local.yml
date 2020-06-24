@@ -1,4 +1,4 @@
-version: '3.8'
+version: "3.8"
 
 services:
   frontender:
@@ -16,6 +16,12 @@ services:
   schedule:
     build:
       context: ../schedule.frontender.info
+  analyze:
+    build:
+      context: ../analyze.frontender.info
+  mailparser:
+    build:
+      context: ../mailparser.frontender.info
   mongodb:
     ports:
       - "27017:27017"
